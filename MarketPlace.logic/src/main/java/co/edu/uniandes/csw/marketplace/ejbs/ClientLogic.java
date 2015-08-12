@@ -8,6 +8,8 @@ import co.edu.uniandes.csw.marketplace.persistence.ClientPersistence;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 /**
  * @generated
