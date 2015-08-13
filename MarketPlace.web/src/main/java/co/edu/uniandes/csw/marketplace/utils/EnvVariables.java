@@ -16,7 +16,5 @@ public class EnvVariables extends Properties {
     public EnvVariables() {
         super.put("apiKey.id", System.getenv("STORMPATHAPIKEYID"));
         super.put("apiKey.secret", System.getenv("STORMPATHAPIKEYSECRET"));
-        System.out.println("Prueba:  " + System.getenv("STORMPATHAPIKEYID") + "pass :" + System.getenv("STORMPATHAPIKEYSECRET"));
     }
-
 }
