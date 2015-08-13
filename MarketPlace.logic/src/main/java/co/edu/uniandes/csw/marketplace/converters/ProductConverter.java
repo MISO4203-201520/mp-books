@@ -27,7 +27,7 @@ public abstract class ProductConverter {
             ProductDTO dto = new ProductDTO();
             dto.setId(entity.getId());
             dto.setName(entity.getName());
-
+            dto.setPrice(entity.getPrice());
             return dto;
         } else {
             return null;
