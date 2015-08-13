@@ -17,11 +17,11 @@
             }, {
                 name: 'image',
                 displayName: 'Image',
-                type: 'String',
+                type: 'Image',
                 required: true
             }, {
                 name: 'isbn',
-                displayName: 'Isbn',
+                displayName: 'ISBN-10',
                 type: 'String',
                 required: true
             }]});

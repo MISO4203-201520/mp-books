@@ -34,7 +34,12 @@
                         controller: 'providerCtrl',
                         controllerAs: alias
                     })
-                    .otherwise('/');
+                    .when('/catalog', {
+                        templateUrl: 'src/modules/product/product.tpl.html',
+                        controller: 'productCtrl',
+                        controllerAs: 'ctrl'
+                    })
+                    .otherwise('/catalog');
         }]);
 
     mainApp.config(['authServiceProvider', function (auth) {

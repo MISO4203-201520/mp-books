@@ -12,7 +12,7 @@
             }, {
                 name: 'price',
                 displayName: 'Price',
-                type: 'Integer',
+                type: 'Currency',
                 required: true
             }, {
                 name: 'book',
