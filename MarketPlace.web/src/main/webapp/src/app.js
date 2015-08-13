@@ -24,6 +24,11 @@
                         controller: 'clientCtrl',
                         controllerAs: alias
                     })
+                    .when('/shoppingCart', {
+                        templateUrl: 'src/modules/cartItem/templates/ShoppingCart.html',
+                        controller: 'cartItemCtrl',
+                        controllerAs: alias
+                    })
                     .when('/provider', {
                         templateUrl: tplUrl,
                         controller: 'providerCtrl',
