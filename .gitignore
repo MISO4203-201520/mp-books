@@ -13,13 +13,13 @@ hs_err_pid*
 
 .tmp/
 /target/
-/MarketPlace.logic/target/
-/MarketPlace.web/target/
+/BookMP.logic/target/
+/BookMP.web/target/
 
 #NetBeans
 nbactions.xml
-/MarketPlace.web/nb-configuration.xml
+/BookMP.web/nb-configuration.xml
 
 #Tests
-/MarketPlace.logic/derby.log
+/BookMP.logic/derby.log
 

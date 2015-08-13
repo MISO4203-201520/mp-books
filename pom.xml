@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>co.edu.uniandes.csw.marketplace</groupId>
-    <artifactId>MarketPlace</artifactId>
+    <groupId>co.edu.uniandes.csw.bookmp</groupId>
+    <artifactId>BookMP</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
-    <name>MarketPlace</name>
+    <name>BookMP</name>
     <modules>
-        <module>MarketPlace.logic</module>
-        <module>MarketPlace.web</module>
+        <module>BookMP.logic</module>
+        <module>BookMP.web</module>
     </modules>
     <profiles>
         <profile>

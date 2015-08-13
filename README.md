@@ -1,15 +1,14 @@
 #Tabla de contenidos
 -  [Introducción](#introducción)
--  [API](#api-de-la-aplicación-marketplace)
+-  [API](#api-de-la-aplicación-bookmp)
   - [Entidad Book](#entidad-book)
   - [Entidad CartItem](#entidad-cartitem)
   - [Entidad Client](#entidad-client)
-  - [Entidad Product](#entidad-product)
-  - [Entidad Provider](#entidad-provider)
+  - [Entidad Editorial](#entidad-editorial)
 
 #API Rest
 ##Introducción
-La comunicación entre cliente y servidor se realiza intercambiando objetos JSON. Para cada entidad se hace un mapeo a JSON, donde cada uno de sus atributos se transforma en una propiedad de un objeto JSON. Todos los servicios se generan en la URL /MarketPlace.web/webresources/. Por defecto, todas las entidades tienen un atributo `id`, con el cual se identifica cada registro:
+La comunicación entre cliente y servidor se realiza intercambiando objetos JSON. Para cada entidad se hace un mapeo a JSON, donde cada uno de sus atributos se transforma en una propiedad de un objeto JSON. Todos los servicios se generan en la URL /BookMP.web/webresources/. Por defecto, todas las entidades tienen un atributo `id`, con el cual se identifica cada registro:
 
 ```javascript
 {
@@ -34,7 +33,7 @@ La respuesta del servidor al solicitar una colección presenta el siguiente form
 }
 ```
 
-##API de la aplicación MarketPlace
+##API de la aplicación BookMP
 ###Entidad Book
 ####CRUD Básico
 En la siguiente tabla se detalla los servicios REST generados para la entidad Book, la estructura del objeto que intercambian y sus respectivas funciones.
@@ -42,11 +41,13 @@ En la siguiente tabla se detalla los servicios REST generados para la entidad Bo
 #####Estructura de objeto Book
 ```javascript
 {
+    editorial: '' /*Tipo Editorial*/,
     id: '' /*Tipo Long que representa id de Long*/,
     name: '' /*Tipo Long que representa id de String*/,
-    description: '' /*Tipo Long que representa id de String*/,
+    isbn: '' /*Tipo Long que representa id de String*/,
     image: '' /*Tipo Long que representa id de String*/,
-    isbn: '' /*Tipo Long que representa id de String*/
+    price: '' /*Tipo Long que representa id de Integer*/,
+    description: '' /*Tipo Long que representa id de String*/
 }
 ```
 #####Servicios
@@ -68,9 +69,9 @@ En la siguiente tabla se detalla los servicios REST generados para la entidad Ca
 ```javascript
 {
     id: '' /*Tipo Long que representa id de Long*/,
-    quantity: '' /*Tipo Long que representa id de Integer*/,
     name: '' /*Tipo Long que representa id de String*/,
-    product: '' /*Tipo Product*/
+    book: '' /*Tipo Book*/,
+    quantity: '' /*Tipo Long que representa id de Integer*/
 }
 ```
 #####Servicios
@@ -123,35 +124,11 @@ Método|URI|Acción|Parámetros|Cuerpo|Retorno
 
 [Volver arriba](#tabla-de-contenidos)
 
-###Entidad Product
+###Entidad Editorial
 ####CRUD Básico
-En la siguiente tabla se detalla los servicios REST generados para la entidad Product, la estructura del objeto que intercambian y sus respectivas funciones.
+En la siguiente tabla se detalla los servicios REST generados para la entidad Editorial, la estructura del objeto que intercambian y sus respectivas funciones.
 
-#####Estructura de objeto Product
-```javascript
-{
-    book: '' /*Tipo Book*/,
-    name: '' /*Tipo Long que representa id de String*/,
-    price: '' /*Tipo Long que representa id de Integer*/,
-    id: '' /*Tipo Long que representa id de Long*/
-}
-```
-#####Servicios
-Método|URI|Acción|Parámetros|Cuerpo|Retorno
-:--:|:--:|:--:|:--:|:--:|:--:
-**GET**|/products|Obtener todos los objetos JSON de Product (RETRIEVE)|**@QueryParam page**: página a consultar<br>**@QueryParam maxRecords**: cantidad de registros a consultar<br><br>*Si se omite alguno de estos parámetros se obtiene todos los registros en la base de datos*||Colección de objetos JSON Product y el total de registros en la base de datos en el header X-Total-Count
-**GET**|/products/:id|Obtener los atributos de una instancia de Product en formato JSON(RETRIEVE)|**@PathParam id**: Identificador del registro||Objeto JSON con detalle de la instancia de Product
-**POST**|/products|Crear una nueva instancia de la entidad Product (CREATE)||Objeto JSON de Product a crear|Objeto JSON de Product creado
-**PUT**|/products/:id|Actualiza una instancia de la entidad Product (UPDATE)|**@PathParam id**: Identificador del registro|Objeto JSON de Product|Objeto JSON de Product actualizado
-**DELETE**|/products/:id|Borra instancia de Product en el servidor (DELETE)|<strong>@PathParam id</strong>: Identificador del registro||
-
-[Volver arriba](#tabla-de-contenidos)
-
-###Entidad Provider
-####CRUD Básico
-En la siguiente tabla se detalla los servicios REST generados para la entidad Provider, la estructura del objeto que intercambian y sus respectivas funciones.
-
-#####Estructura de objeto Provider
+#####Estructura de objeto Editorial
 ```javascript
 {
     id: '' /*Tipo Long que representa id de Long*/,
@@ -164,24 +141,11 @@ En la siguiente tabla se detalla los servicios REST generados para la entidad Pr
 #####Servicios
 Método|URI|Acción|Parámetros|Cuerpo|Retorno
 :--:|:--:|:--:|:--:|:--:|:--:
-**GET**|/providers|Obtener todos los objetos JSON de Provider (RETRIEVE)|**@QueryParam page**: página a consultar<br>**@QueryParam maxRecords**: cantidad de registros a consultar<br><br>*Si se omite alguno de estos parámetros se obtiene todos los registros en la base de datos*||Colección de objetos JSON Provider y el total de registros en la base de datos en el header X-Total-Count
-**GET**|/providers/:id|Obtener los atributos de una instancia de Provider en formato JSON(RETRIEVE)|**@PathParam id**: Identificador del registro||Objeto JSON con detalle de la instancia de Provider
-**POST**|/providers|Crear una nueva instancia de la entidad Provider (CREATE)||Objeto JSON de Provider a crear|Objeto JSON de Provider creado
-**PUT**|/providers/:id|Actualiza una instancia de la entidad Provider (UPDATE)|**@PathParam id**: Identificador del registro|Objeto JSON de Provider|Objeto JSON de Provider actualizado
-**DELETE**|/providers/:id|Borra instancia de Provider en el servidor (DELETE)|<strong>@PathParam id</strong>: Identificador del registro||
-
-####Maestros Detalle de Provider
-#####Servicios
-A diferencia del API para CRUD Básico, el API de Maestro/Detalle no provee un servicio para listar los registros de la entidad maestra. Los servicios generados para el componente Maestro/Detalle de Provider son los siguientes:
-
-######Relaciones Composite
-
-Método|URI|Acción|Parámetros|Cuerpo|Retorno
-:--:|:--:|:--:|:--:|:--:|:--:
-**GET**|providers/:id/products|Obtener Objetos JSON de products(Product) dependientes de Provider|**@PathParam id**: `id` de instancia de Provider||Colección de objetos JSON de products(Product)
-**POST**|providers/:id/products|Creación de instancias de products(Product) dependientes de Provider|**@PathParam id**: `id` de instancia de Provider|Colección de objetos JSON de products(Product) a crear|Colección de objetos JSON de products(Product) creados con sus respectivos ID
-**PUT**|providers/:id/products|Actualización de instancias de products(Product) dependientes de Provider|**@PathParam id**: `id` de instancia de Provider|Colección de objetos JSON de products(Product) a actualizar|Colección de objetos JSON de products(Product) actualizados
-**DELETE**|providers/:id/products|Eliminación de instancias de products(Product) dependientes de Provider|**@PathParam id**: `id` de instancia de Provider|Colección de atributo `id` de products(Product) a eliminar|
+**GET**|/editorials|Obtener todos los objetos JSON de Editorial (RETRIEVE)|**@QueryParam page**: página a consultar<br>**@QueryParam maxRecords**: cantidad de registros a consultar<br><br>*Si se omite alguno de estos parámetros se obtiene todos los registros en la base de datos*||Colección de objetos JSON Editorial y el total de registros en la base de datos en el header X-Total-Count
+**GET**|/editorials/:id|Obtener los atributos de una instancia de Editorial en formato JSON(RETRIEVE)|**@PathParam id**: Identificador del registro||Objeto JSON con detalle de la instancia de Editorial
+**POST**|/editorials|Crear una nueva instancia de la entidad Editorial (CREATE)||Objeto JSON de Editorial a crear|Objeto JSON de Editorial creado
+**PUT**|/editorials/:id|Actualiza una instancia de la entidad Editorial (UPDATE)|**@PathParam id**: Identificador del registro|Objeto JSON de Editorial|Objeto JSON de Editorial actualizado
+**DELETE**|/editorials/:id|Borra instancia de Editorial en el servidor (DELETE)|<strong>@PathParam id</strong>: Identificador del registro||
 
 [Volver arriba](#tabla-de-contenidos)
 
