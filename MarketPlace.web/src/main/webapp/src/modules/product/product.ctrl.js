@@ -8,6 +8,7 @@
                     name: 'addToCart',
                     displayName: 'Add to Cart',
                     icon: 'shopping-cart',
+                    class: 'primary',
                     fn: function (record) {
                         return cartItemSvc.saveRecord({
                             product: record,
