@@ -3,7 +3,7 @@
 
     mod.controller('productCtrl', ['CrudCreator', '$scope', 'productService', 'productModel', 'cartItemService', '$location', function (CrudCreator, $scope, svc, model, cartItemSvc, $location) {
             CrudCreator.extendController(this, svc, $scope, model, 'product', 'Products');
-            this.itemsPerPage = 1;
+
             this.searchByName = function (bookName) {
                 var search;
                 console.log(bookName);
