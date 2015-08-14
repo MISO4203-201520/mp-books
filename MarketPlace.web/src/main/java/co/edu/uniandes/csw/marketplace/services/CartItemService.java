@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -17,10 +18,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import org.apache.shiro.SecurityUtils;
 
 /**
  * @generated
  */
+@Path("cartItems")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class CartItemService {
@@ -35,6 +38,8 @@ public class CartItemService {
     private Integer maxRecords;
     @PathParam("idClient")
     private Long idClient;
+    @HeaderParam("X-UserId")
+    private String userId;
 
     /**
      * @generated

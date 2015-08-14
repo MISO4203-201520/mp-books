@@ -8,8 +8,6 @@ import co.edu.uniandes.csw.marketplace.persistence.ClientPersistence;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 /**
  * @generated
@@ -69,5 +67,9 @@ public class ClientLogic implements IClientLogic {
      */
     public List<ClientDTO> findByName(String name) {
         return ClientConverter.listEntity2DTO(persistence.findByName(name));
+    }
+    
+    public ClientDTO getClientByUserId(String userId){
+        return ClientConverter.refEntity2DTO(persistence.getClientByUserId(userId));
     }
 }
