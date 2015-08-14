@@ -29,8 +29,8 @@
                         <div  ng-show="column.editable" ng-switch-default editable-text="record[column.name]"  onbeforesave="verify(record[column.name])" onaftersave="postVerify(record[column.name])" >{{record[column.name]}}</div>
                         <div  ng-hide="column.editable" ng-switch-default >{{record[column.name]}}</div>
                     </td>
-                    <td ng-if="recordActions">
-                        <button ng-repeat="action in recordActions" id="{{$parent.$index}}-{{action.name}}-btn" class="btn btn-default btn-sm" ng-show="action.show()" ng-click="action.fn(record)"><span class="glyphicon glyphicon-{{action.icon}}"></span> {{action.displayName}}</button>
+                    <td ng-if="ctrl.recordActions">
+                        <button ng-repeat="action in ctrl.recordActions" id="{{$parent.$index}}-{{action.name}}-btn" class="btn btn-default btn-sm" ng-show="action.show()" ng-click="action.fn(record)"><span class="glyphicon glyphicon-{{action.icon}}"></span> {{action.displayName}}</button>
                     </td>
                 </tr>
                 <tr>

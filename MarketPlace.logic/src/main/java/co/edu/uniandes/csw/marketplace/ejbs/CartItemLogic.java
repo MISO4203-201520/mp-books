@@ -8,6 +8,7 @@ import co.edu.uniandes.csw.marketplace.persistence.CartItemPersistence;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.Query;
 
 /**
  * @generated
@@ -15,7 +16,8 @@ import javax.inject.Inject;
 @Stateless
 public class CartItemLogic implements ICartItemLogic {
 
-    @Inject private CartItemPersistence persistence;
+    @Inject
+    private CartItemPersistence persistence;
 
     /**
      * @generated
@@ -68,4 +70,33 @@ public class CartItemLogic implements ICartItemLogic {
     public List<CartItemDTO> findByName(String name) {
         return CartItemConverter.listEntity2DTO(persistence.findByName(name));
     }
+
+    public List<CartItemDTO> getCartItemsByClient(Integer page, Integer maxRecords, Long idClient) {
+        return persistence.getCartItemsByClient(page, maxRecords, idClient);
+    }
+
+    public CartItemDTO createCartItemByClient(CartItemDTO dto, Long idClient) {
+        return persistence.createCartItemByClient(dto, idClient);
+    }
+
+    public CartItemDTO getCartItemsByClientById(Long id, Long idClient) {
+        return persistence.getCartItemsByClientById(idClient, idClient);
+    }
+
+    public CartItemDTO updateCartItemByClient(Long idClient, CartItemDTO dto) {
+        CartItemDTO result = new CartItemDTO();
+        if (dto.getClient().getId().equals(idClient)) {
+            result = updateCartItem(dto);
+        }
+        return result;
+    }
+
+    public void deleteCartItemByClient(Long idClient, Long id) {
+        persistence.deleteCartItemByClient(idClient, id);
+    }
+
+    public int countCartItemsByClient(Long idClient) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

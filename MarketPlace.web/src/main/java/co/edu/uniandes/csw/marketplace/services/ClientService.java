@@ -30,6 +30,7 @@ public class ClientService {
     @Context private HttpServletResponse response;
     @QueryParam("page") private Integer page;
     @QueryParam("maxRecords") private Integer maxRecords;
+    @Inject private CartItemService cartItemService;
 
     /**
      * @generated
@@ -78,4 +79,10 @@ public class ClientService {
     public void deleteClient(@PathParam("id") Long id) {
         clientLogic.deleteClient(id);
     }
+    
+    @Path("{idClient: \\d+}/cartItems")
+    public CartItemService getCartItemResource() {
+        return cartItemService;
+    }
+    
 }

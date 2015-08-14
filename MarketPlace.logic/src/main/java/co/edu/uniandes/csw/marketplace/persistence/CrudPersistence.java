@@ -102,6 +102,12 @@ public abstract class CrudPersistence<T> {
         return q.getSingleResult();
     }
 
+    public int countCartItemsByClient(Long idClient) {
+        Query count = em.createQuery("select count(u) from " + entityClass.getSimpleName() + " u where u.clientCart.id = :idC");
+        int regCount = Integer.parseInt(count.setParameter("idC", idClient).getSingleResult().toString());
+        return regCount;
+    }   
+    
     /**
      * @generated
      */
