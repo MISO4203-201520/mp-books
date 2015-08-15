@@ -96,7 +96,7 @@ public class CartItemLogic implements ICartItemLogic {
     }
 
     public int countCartItemsByClient(Long idClient) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return persistence.countByClient(idClient);
     }
 
 }

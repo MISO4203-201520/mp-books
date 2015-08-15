@@ -11,7 +11,7 @@ import org.apache.shiro.authc.AuthenticationException;
 @Provider
 @PreMatching
 public class AuthFilter implements ContainerRequestFilter {
-
+    
     @Override
     public void filter(ContainerRequestContext req) throws IOException, AuthenticationException {
         req.getHeaders().remove("X-UserId");

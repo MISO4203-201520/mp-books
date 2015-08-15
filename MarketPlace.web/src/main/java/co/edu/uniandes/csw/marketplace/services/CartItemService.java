@@ -1,9 +1,12 @@
 package co.edu.uniandes.csw.marketplace.services;
 
 import co.edu.uniandes.csw.marketplace.api.ICartItemLogic;
+import co.edu.uniandes.csw.marketplace.api.IClientLogic;
 import co.edu.uniandes.csw.marketplace.dtos.CartItemDTO;
+import co.edu.uniandes.csw.marketplace.dtos.ClientDTO;
 import co.edu.uniandes.csw.marketplace.providers.StatusCreated;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -29,6 +32,8 @@ public class CartItemService {
 
     @Inject
     private ICartItemLogic cartItemLogic;
+    @Inject
+    private IClientLogic clientLogic;
     @Context
     private HttpServletResponse response;
     @QueryParam("page")
@@ -39,6 +44,13 @@ public class CartItemService {
     private Long idClient;
     @HeaderParam("X-UserId")
     private String userId;
+    private ClientDTO currentClient;
+    
+    
+    @PostConstruct
+	public void initIt(){
+            currentClient = clientLogic.getClientByUserId(userId);
+	}
 
     /**
      * @generated
@@ -46,7 +58,7 @@ public class CartItemService {
     @POST
     @StatusCreated
     public CartItemDTO createCartItem(CartItemDTO dto) {
-        return cartItemLogic.createCartItemByClient(dto, idClient);
+        return cartItemLogic.createCartItemByClient(dto, currentClient.getId());
     }
 
     /**
@@ -55,9 +67,9 @@ public class CartItemService {
     @GET
     public List<CartItemDTO> getCartItems() {
         if (page != null && maxRecords != null) {
-            this.response.setIntHeader("X-Total-Count", cartItemLogic.countCartItemsByClient(idClient));
+            this.response.setIntHeader("X-Total-Count", cartItemLogic.countCartItemsByClient(currentClient.getId()));
         }
-        return cartItemLogic.getCartItemsByClient(page, maxRecords, idClient);
+        return cartItemLogic.getCartItemsByClient(page, maxRecords, currentClient.getId());
     }
 
     /**
@@ -66,7 +78,7 @@ public class CartItemService {
     @GET
     @Path("{id: \\d+}")
     public CartItemDTO getCartItemDTO(@PathParam("id") Long id) {
-        return cartItemLogic.getCartItemsByClientById(id, idClient);
+        return cartItemLogic.getCartItemsByClientById(id, currentClient.getId());
     }
 
     /**
@@ -76,7 +88,7 @@ public class CartItemService {
     @Path("{id: \\d+}")
     public CartItemDTO updateCartItem(@PathParam("id") Long id, CartItemDTO dto) {
         dto.setId(id);
-        return cartItemLogic.updateCartItemByClient(idClient, dto);
+        return cartItemLogic.updateCartItemByClient(currentClient.getId(), dto);
     }
 
     /**
@@ -85,6 +97,6 @@ public class CartItemService {
     @DELETE
     @Path("{id: \\d+}")
     public void deleteCartItem(@PathParam("id") Long id) {
-        cartItemLogic.deleteCartItemByClient(idClient, id);
+        cartItemLogic.deleteCartItemByClient(currentClient.getId(), id);
     }
 }
