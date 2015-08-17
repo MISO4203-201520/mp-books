@@ -45,12 +45,13 @@ public class CartItemService {
     @HeaderParam("X-UserId")
     private String userId;
     private ClientDTO currentClient;
-    
-    
+
     @PostConstruct
-	public void initIt(){
+    public void initIt() {
+        if (userId != null) {
             currentClient = clientLogic.getClientByUserId(userId);
-	}
+        }
+    }
 
     /**
      * @generated

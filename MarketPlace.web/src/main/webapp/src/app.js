@@ -1,7 +1,8 @@
-(function (ng) {
+(function(ng) {
 
     var mainApp = ng.module('mainApp', [
         //'ngCrudMock',
+        'xeditable',
         'authModule',
         'bookModule',
         'cartItemModule',
@@ -10,9 +11,10 @@
         'providerModule',
         'ngRoute',
         'ngCrud'
+
     ]);
 
-    mainApp.config(['$routeProvider', 'CrudTemplateURL', 'CrudCtrlAlias', function ($routeProvider, tplUrl, alias) {
+    mainApp.config(['$routeProvider', 'CrudTemplateURL', 'CrudCtrlAlias', function($routeProvider, tplUrl, alias) {
             $routeProvider
                     .when('/book', {
                         templateUrl: tplUrl,
@@ -27,7 +29,7 @@
                     .when('/shoppingCart', {
                         templateUrl: 'src/modules/cartItem/templates/ShoppingCart.html',
                         controller: 'cartItemCtrl',
-                        controllerAs: alias
+                        controllerAs: 'ctrl'
                     })
                     .when('/provider', {
                         templateUrl: tplUrl,
@@ -42,10 +44,10 @@
                     .otherwise('/catalog');
         }]);
 
-    mainApp.config(['authServiceProvider', function (auth) {
+    mainApp.config(['authServiceProvider', function(auth) {
             auth.setValues({
                 apiUrl: 'users',
-                successPath: '/book',
+                successPath: '/catalog',
                 loginPath: '/login',
                 registerPath: '/register',
                 logoutRedirect: '/login',
@@ -55,5 +57,9 @@
                 nameCookie: 'userCookie'
             });
         }]);
+
+    mainApp.run(function(editableOptions) {
+        editableOptions.theme = 'bs3'; // bootstrap3 theme. For Xeditable plugin Angular
+    });
 
 })(window.angular);

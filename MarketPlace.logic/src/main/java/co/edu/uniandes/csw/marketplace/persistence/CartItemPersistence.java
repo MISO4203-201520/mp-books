@@ -46,7 +46,7 @@ public class CartItemPersistence extends CrudPersistence<CartItemEntity> {
 
     public void deleteCartItemByClient(Long idClient, Long id) {
         ClientEntity clientEntity = em.find(ClientEntity.class, idClient);
-        if (clientEntity.getId().equals(em.find(CartItemEntity.class, id).getClient())) {
+        if (clientEntity.getId().equals(em.find(CartItemEntity.class, id).getClient().getId())) {
             delete(id);
         }
     }

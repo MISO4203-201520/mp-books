@@ -11,13 +11,13 @@
                     service: 'productService',
                     options: [],
                     required: true,
-                    editOnList: false
+                    editable: false
                 }, {
                     name: 'quantity',
                     displayName: 'Quantity',
                     type: 'Integer',
                     required: true,
-                    editOnList: true
+                    editable: true
                 }, {
                     name: 'Price',
                     displayName: 'Price',
@@ -32,11 +32,13 @@
                     name: 'SubTotal',
                     displayName: 'SubTotal',
                     type: 'Computed',
+                    editable : false,
                     fn: function (record) {
                         return record.product.price * record.quantity;
                     }
-                 
-
+                    
+                    
+                
          }]});
 
 
