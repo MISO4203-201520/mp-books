@@ -6,7 +6,6 @@
 
             this.searchByName = function (bookName) {
                 var search;
-                console.log(bookName);
                 if (bookName) {
                     search = '?q=' + bookName;
                 }

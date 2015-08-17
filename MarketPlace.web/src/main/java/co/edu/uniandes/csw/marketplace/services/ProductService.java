@@ -26,10 +26,16 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class ProductService {
 
-    @Inject private IProductLogic productLogic;
-    @Context private HttpServletResponse response;
-    @QueryParam("page") private Integer page;
-    @QueryParam("maxRecords") private Integer maxRecords;
+    @Inject
+    private IProductLogic productLogic;
+    @Context
+    private HttpServletResponse response;
+    @QueryParam("page")
+    private Integer page;
+    @QueryParam("maxRecords")
+    private Integer maxRecords;
+    @QueryParam("q")
+    private String bookName;
 
     /**
      * @generated
@@ -45,10 +51,14 @@ public class ProductService {
      */
     @GET
     public List<ProductDTO> getProducts() {
-        if (page != null && maxRecords != null) {
-            this.response.setIntHeader("X-Total-Count", productLogic.countProducts());
+        if (bookName != null) {
+            return productLogic.getByBookName(bookName);
+        } else {
+            if (page != null && maxRecords != null) {
+                this.response.setIntHeader("X-Total-Count", productLogic.countProducts());
+            }
+            return productLogic.getProducts(page, maxRecords);
         }
-        return productLogic.getProducts(page, maxRecords);
     }
 
     /**
