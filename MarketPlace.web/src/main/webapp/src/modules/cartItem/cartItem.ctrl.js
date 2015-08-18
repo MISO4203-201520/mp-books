@@ -4,13 +4,13 @@
     mod.controller('cartItemCtrl', ['CrudCreator', '$scope', 'cartItemService', 'cartItemModel', '$location', function(CrudCreator, $scope, svc, model, $location) {
             CrudCreator.extendController(this, svc, $scope, model, 'cartItem', 'Shopping Cart');
             var self = this;
+            
             this.newFetchRecords = function() {
                 this.fetchRecords().then(function() {
                     self.calcTotal();
                 });
             };
             this.newFetchRecords();
-            $scope.ctrlerror = {status: false};
             this.readOnly = true;
             $scope.lastQuantity = 0;
             $scope.total = 0;
@@ -44,17 +44,18 @@
                 $scope.lastQuantity = quantity;
             };//guarda la cantidad anterior
 
-            $scope.postVerify = function(quantity) {
+            $scope.postVerify = function(record) {
                 var patron = /^\d*$/; //^[0-9]{3}$
-                if (patron.test(quantity) && quantity > 0) {
+                if (patron.test(record.quantity) && record.quantity > 0) {
                     self.calcTotal();
                 } else {
-                    $scope.ctrlerror = {status: true, type: "danger", msg: "You must enter a valid quantity"};
-                    $scope.currentRecord = $scope.lastQuantity;
+                    self.showError("You must enter a valid quantity");
+                    record.quantity = $scope.lastQuantity;
+                    $scope.currentRecord = record;
                 }
             };//Realiza la validacion de la nueva cantidad asignada.
             $scope.checkout = function() {
-                $scope.ctrlerror = {status: true, type: "warning", msg: "Not implemented yet"};
+                self.showWarning("Not implemented yet");
             };
 
         }]);
