@@ -69,14 +69,14 @@ public abstract class CrudPersistence<T> {
     /**
      * @generated
      */
-    public List<Object> executeListNamedQuery(String name){
+    public<V> List<V> executeListNamedQuery(String name){
         return em.createNamedQuery(name).getResultList();
     }
 
     /**
      * @generated
      */
-    public List<Object> executeListNamedQuery(String name, Map<String,Object> params){
+    public<V> List<V> executeListNamedQuery(String name, Map<String,Object> params){
         Query q = em.createNamedQuery(name);
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             q.setParameter(entry.getKey(), entry.getValue());
@@ -87,19 +87,19 @@ public abstract class CrudPersistence<T> {
     /**
      * @generated
      */
-    public Object executeSingleNamedQuery(String name){
-        return em.createNamedQuery(name).getSingleResult();
+    public<V> V executeSingleNamedQuery(String name){
+        return (V)em.createNamedQuery(name).getSingleResult();
     }
 
     /**
      * @generated
      */
-    public Object executeSingleNamedQuery(String name, Map<String,Object> params){
+    public<V> V executeSingleNamedQuery(String name, Map<String,Object> params){
         Query q = em.createNamedQuery(name);
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             q.setParameter(entry.getKey(), entry.getValue());
         }
-        return q.getSingleResult();
+        return (V)q.getSingleResult();
     }
 
     public int countCartItemsByClient(Long idClient) {

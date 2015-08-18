@@ -1,7 +1,9 @@
 package co.edu.uniandes.csw.marketplace.persistence;
 
 import co.edu.uniandes.csw.marketplace.entities.ProductEntity;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
@@ -19,8 +21,8 @@ public class ProductPersistence extends CrudPersistence<ProductEntity> {
     }
 
     public List<ProductEntity> getByBookName(String name) {
-        Query q = em.createNamedQuery("Product.getByBookName");
-        q.setParameter("name", "%" + name.toUpperCase() + "%");
-        return q.getResultList();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("name", "%" + name.toUpperCase() + "%");
+        return executeListNamedQuery("Product.getByBookName", params);
     }
 }
