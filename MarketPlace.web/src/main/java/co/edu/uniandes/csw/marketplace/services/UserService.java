@@ -50,7 +50,7 @@ public class UserService {
             currentUser.login(token);
             alreadyClient = clientLogic.findByName(user.getUserName());
             if (!alreadyClient.isEmpty()) {
-                currentUser.getSession().setAttribute("ClientId", alreadyClient.get(0).getId());
+                currentUser.getSession().setAttribute("ClientId", alreadyClient.get(0));
                 return Response.status(Response.Status.OK).entity(alreadyClient.get(0)).build();
             } else {
                 return Response.status(Response.Status.CONFLICT).build();

@@ -21,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import org.apache.shiro.SecurityUtils;
 
 /**
  * @generated
@@ -48,9 +49,7 @@ public class CartItemService {
 
     @PostConstruct
     public void initIt() {
-        if (userId != null) {
-            currentClient = clientLogic.getClientByUserId(userId);
-        }
+        currentClient = (ClientDTO)SecurityUtils.getSubject().getSession().getAttribute("ClientId");
     }
 
     /**
