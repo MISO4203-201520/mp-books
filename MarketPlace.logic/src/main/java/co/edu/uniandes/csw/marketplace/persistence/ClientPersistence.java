@@ -23,6 +23,6 @@ public class ClientPersistence extends CrudPersistence<ClientEntity> {
     public ClientEntity getClientByUserId(String userId){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", userId);
-        return (ClientEntity)this.executeSingleNamedQuery("Client.getByUserId", params);
+        return this.executeSingleNamedQuery("Client.getByUserId", params);
     }
 }
