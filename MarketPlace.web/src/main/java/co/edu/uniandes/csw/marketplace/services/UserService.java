@@ -56,7 +56,7 @@ public class UserService {
             }
         } catch (AuthenticationException e) {
             Gson json = new Gson();
-            return Response.status(Response.Status.OK).entity(json.toJson(e.getMessage())).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(json.toJson(e.getMessage())).build();
         }
     }
 
