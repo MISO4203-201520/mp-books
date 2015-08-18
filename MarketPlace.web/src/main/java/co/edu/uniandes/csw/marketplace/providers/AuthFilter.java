@@ -15,9 +15,9 @@ public class AuthFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext req) throws IOException, AuthenticationException {
         req.getHeaders().remove("X-UserId");
-        Object userId = SecurityUtils.getSubject().getPrincipal();
-        if (userId != null) {
-            req.getHeaders().add("X-UserId", userId.toString());
+        if (SecurityUtils.getSubject().isAuthenticated()) {
+            req.getHeaders().add("X-UserId", SecurityUtils.getSubject().getSession().getAttribute("ClientId").toString());
+            System.out.println("id de usuario: "+req.getHeaderString("X-UserId"));
         }
     }
 }
