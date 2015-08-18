@@ -7,8 +7,9 @@
             this.isAuthenticated = function(){
                 if (!authSvc.getCurrentUser()){
                     $location.path('/login');
-                };
+                }                
             };
+            this.isAuthenticated();
             this.newFetchRecords = function() {
                 this.fetchRecords().then(function() {
                     self.calcTotal();
