@@ -1,10 +1,14 @@
 (function(ng) {
     var mod = ng.module('cartItemModule');
 
-    mod.controller('cartItemCtrl', ['CrudCreator', '$scope', 'cartItemService', 'cartItemModel', '$location', function(CrudCreator, $scope, svc, model, $location) {
+    mod.controller('cartItemCtrl', ['CrudCreator', '$scope', 'cartItemService', 'cartItemModel', '$location','authService',  function(CrudCreator, $scope, svc, model, $location, authSvc) {
             CrudCreator.extendController(this, svc, $scope, model, 'cartItem', 'My Shopping Cart');
             var self = this;
-            
+            this.isAuthenticated = function(){
+                if (!authSvc.getCurrentUser()){
+                    $location.path('/login');
+                };
+            };
             this.newFetchRecords = function() {
                 this.fetchRecords().then(function() {
                     self.calcTotal();
