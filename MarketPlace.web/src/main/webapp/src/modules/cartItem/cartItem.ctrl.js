@@ -2,7 +2,7 @@
     var mod = ng.module('cartItemModule');
 
     mod.controller('cartItemCtrl', ['CrudCreator', '$scope', 'cartItemService', 'cartItemModel', '$location', function(CrudCreator, $scope, svc, model, $location) {
-            CrudCreator.extendController(this, svc, $scope, model, 'cartItem', 'Shopping Cart');
+            CrudCreator.extendController(this, svc, $scope, model, 'cartItem', 'My Shopping Cart');
             var self = this;
             
             this.newFetchRecords = function() {

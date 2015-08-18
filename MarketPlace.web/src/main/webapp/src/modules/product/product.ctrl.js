@@ -1,7 +1,7 @@
 (function (ng) {
     var mod = ng.module('productModule');
 
-    mod.controller('productCtrl', ['CrudCreator', '$scope', 'productService', 'productModel', 'cartItemService', '$location', function (CrudCreator, $scope, svc, model, cartItemSvc, $location) {
+    mod.controller('productCtrl', ['CrudCreator', '$scope', 'productService', 'productModel', 'cartItemService', '$location', 'authService', function (CrudCreator, $scope, svc, model, cartItemSvc, $location, authService) {
             CrudCreator.extendController(this, svc, $scope, model, 'product', 'Products');
 
             this.searchByName = function (bookName) {
@@ -18,10 +18,14 @@
                     icon: 'shopping-cart',
                     class: 'primary',
                     fn: function (record) {
-                        return cartItemSvc.saveRecord({
-                            product: record,
-                            name: record.book.name,
-                            quantity: 1});
+                        if (authService.getCurrentUser()) {
+                            return cartItemSvc.saveRecord({
+                                product: record,
+                                name: record.book.name,
+                                quantity: 1});
+                        }else{
+                            $location.path('/login');// o colocar servicio de LocalStorage
+                        }
                     },
                     show: function () {
                         return true;
