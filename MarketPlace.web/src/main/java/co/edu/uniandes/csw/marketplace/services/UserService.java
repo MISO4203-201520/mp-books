@@ -44,14 +44,13 @@ public class UserService {
     @POST
     public Response login(UserDTO user) {
         try {
-            List<ClientDTO> alreadyClient;
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), user.getPassword(), user.isRememberMe());
             Subject currentUser = SecurityUtils.getSubject();
             currentUser.login(token);
-            alreadyClient = clientLogic.findByName(user.getUserName());
-            if (!alreadyClient.isEmpty()) {
-                currentUser.getSession().setAttribute("ClientId", alreadyClient.get(0));
-                return Response.status(Response.Status.OK).entity(alreadyClient.get(0)).build();
+            ClientDTO alreadyClient = clientLogic.getClientByUserId(currentUser.getPrincipal().toString());
+            if (alreadyClient != null) {
+                currentUser.getSession().setAttribute("ClientId", alreadyClient);
+                return Response.status(Response.Status.OK).entity(alreadyClient).build();
             } else {
                 return Response.status(Response.Status.CONFLICT).build();
             }

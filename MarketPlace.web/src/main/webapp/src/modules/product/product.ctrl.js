@@ -32,7 +32,7 @@
                     }
                 }];
 
-            this.loadRefOptions();
+//            this.loadRefOptions();
             this.fetchRecords();
         }]);
 })(window.angular);
