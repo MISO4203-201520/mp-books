@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.edu.uniandes.csw.marketplace.providers;
+package co.edu.uniandes.csw.marketplace.shiro;
 
 
 import javax.servlet.ServletRequest;
@@ -16,7 +16,7 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
  *
  * @author Jhonatan
  */
-public class FilterShiro extends FormAuthenticationFilter {
+public class AuthcFilter extends FormAuthenticationFilter {
 
     @Override
     public boolean onAccessDenied(ServletRequest request, ServletResponse response) {
