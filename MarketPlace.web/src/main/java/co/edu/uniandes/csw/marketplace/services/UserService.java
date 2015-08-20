@@ -60,7 +60,7 @@ public class UserService {
                     return Response.ok(provider).build();
                 } else {
                     return Response.status(Response.Status.BAD_REQUEST)
-                            .entity("User is not registered")
+                            .entity(" User is not registered")
                             .type(MediaType.TEXT_PLAIN)
                             .build();
                 }

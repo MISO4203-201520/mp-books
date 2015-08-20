@@ -56,6 +56,9 @@
             $scope.checkout = function () {
                 self.showWarning("Not implemented yet");
             };
+            $scope.subtotal = function(record){
+                return record.product.price * record.quantity;
+            };
         }]);
 
 })(window.angular);
