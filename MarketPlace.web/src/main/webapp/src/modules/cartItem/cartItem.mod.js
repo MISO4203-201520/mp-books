@@ -7,11 +7,13 @@
             fields : [{
                 name: 'product',
                 displayName: 'Product',
-                type: 'Reference',
-                service: 'productService',
-                options: [],
+                type: 'Computed',
+                fn: function (record) {
+                    return record.product.book.name;
+                },
                 required: true,
-                editable: false
+                editable: false,
+                currency: false
             }, {
                 name: 'quantity',
                 displayName: 'Quantity',
