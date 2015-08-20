@@ -10,7 +10,7 @@ import javax.ejb.EJBException;
 public class EJBExceptionMapper implements ExceptionMapper<EJBException> {
 
     public Response toResponse(EJBException exception) {
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+        return Response.serverError()
                 .entity(getInitCause(exception).getLocalizedMessage())
                 .type(MediaType.TEXT_PLAIN)
                 .build();

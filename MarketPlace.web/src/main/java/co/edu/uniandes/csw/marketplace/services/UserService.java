@@ -6,13 +6,13 @@
 package co.edu.uniandes.csw.marketplace.services;
 
 import co.edu.uniandes.csw.marketplace.api.IClientLogic;
+import co.edu.uniandes.csw.marketplace.api.IProviderLogic;
 import co.edu.uniandes.csw.marketplace.utils.StormpathService;
 import co.edu.uniandes.csw.marketplace.dtos.ClientDTO;
+import co.edu.uniandes.csw.marketplace.dtos.ProviderDTO;
 import co.edu.uniandes.csw.marketplace.dtos.UserDTO;
 import com.stormpath.sdk.account.Account;
-import com.google.gson.Gson;
 import com.stormpath.sdk.resource.ResourceException;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -34,11 +34,13 @@ import org.apache.shiro.subject.Subject;
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-
 public class UserService {
 
     @Inject
     private IClientLogic clientLogic;
+
+    @Inject
+    private IProviderLogic providerLogic;
 
     @Path("/login")
     @POST
@@ -47,16 +49,27 @@ public class UserService {
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), user.getPassword(), user.isRememberMe());
             Subject currentUser = SecurityUtils.getSubject();
             currentUser.login(token);
-            ClientDTO alreadyClient = clientLogic.getClientByUserId(currentUser.getPrincipal().toString());
-            if (alreadyClient != null) {
-                currentUser.getSession().setAttribute("ClientId", alreadyClient);
-                return Response.status(Response.Status.OK).entity(alreadyClient).build();
+            ClientDTO client = clientLogic.getClientByUserId(currentUser.getPrincipal().toString());
+            if (client != null) {
+                currentUser.getSession().setAttribute("ClientId", client);
+                return Response.ok(client).build();
             } else {
-                return Response.status(Response.Status.CONFLICT).build();
+                ProviderDTO provider = providerLogic.getProviderByUserId(currentUser.getPrincipal().toString());
+                if (provider != null) {
+                    currentUser.getSession().setAttribute("Provider", provider);
+                    return Response.ok(provider).build();
+                } else {
+                    return Response.status(Response.Status.BAD_REQUEST)
+                            .entity("User is not registered")
+                            .type(MediaType.TEXT_PLAIN)
+                            .build();
+                }
             }
         } catch (AuthenticationException e) {
-            Gson json = new Gson();
-            return Response.status(Response.Status.UNAUTHORIZED).entity(json.toJson(e.getMessage())).build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .type(MediaType.TEXT_PLAIN)
+                    .build();
         }
     }
 
@@ -66,7 +79,7 @@ public class UserService {
         try {
             Subject currentUser = SecurityUtils.getSubject();
             currentUser.logout();
-            return Response.status(Response.Status.OK).build();
+            return Response.ok().build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -82,10 +95,12 @@ public class UserService {
             user.setName(userAttributes.get("givenName") + " " + userAttributes.get("surname"));
             user.setEmail(userAttributes.get("email"));
             user.setUserName(userAttributes.get("username"));
-            return Response.status(Response.Status.OK).entity(user).build();
+            return Response.ok(user).build();
         } catch (AuthenticationException e) {
-            Gson json = new Gson();
-            return Response.status(Response.Status.BAD_REQUEST).entity(json.toJson(e.getMessage())).build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .type(MediaType.TEXT_PLAIN)
+                    .build();
         }
     }
 
@@ -99,11 +114,12 @@ public class UserService {
             newClient.setName(user.getUserName());
             newClient.setUserId(acct.getHref());
             newClient = clientLogic.createClient(newClient);
-            return Response.status(Response.Status.OK).build();
+            return Response.ok(newClient).build();
         } catch (ResourceException e) {
-            Gson json = new Gson();
-            return Response.status(e.getStatus()).entity(json.toJson(e.getMessage())).build();
+            return Response.status(e.getStatus())
+                    .entity(e.getMessage())
+                    .type(MediaType.TEXT_PLAIN)
+                    .build();
         }
     }
-
 }

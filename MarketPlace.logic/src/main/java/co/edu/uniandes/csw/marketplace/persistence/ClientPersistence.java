@@ -1,10 +1,8 @@
 package co.edu.uniandes.csw.marketplace.persistence;
 
 import co.edu.uniandes.csw.marketplace.entities.ClientEntity;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import javax.ejb.Stateless;
 
 /**
