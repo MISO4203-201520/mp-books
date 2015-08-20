@@ -16,6 +16,7 @@ public class UserDTO {
     private String password;
     private String email;
     private boolean rememberMe;
+    private String role;
 
     public String getName() {
         return name;
@@ -55,6 +56,14 @@ public class UserDTO {
 
     public void setRememberMe(boolean rememberMe) {
         this.rememberMe = rememberMe;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
 }

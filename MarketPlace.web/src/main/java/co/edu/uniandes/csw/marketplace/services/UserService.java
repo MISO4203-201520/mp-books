@@ -109,12 +109,24 @@ public class UserService {
     public Response setUser(UserDTO user) {
 
         try {
-            Account acct = StormpathService.createUserClient(user);
-            ClientDTO newClient = new ClientDTO();
-            newClient.setName(user.getUserName());
-            newClient.setUserId(acct.getHref());
-            newClient = clientLogic.createClient(newClient);
-            return Response.ok(newClient).build();
+            switch (user.getRole()) {
+                case "user":
+                    Account acctClient = StormpathService.createUser(user);
+                    ClientDTO newClient = new ClientDTO();
+                    newClient.setName(user.getUserName());
+                    newClient.setUserId(acctClient.getHref());
+                    newClient = clientLogic.createClient(newClient);
+                    break;
+
+                case "provider":
+                    Account acctProvider = StormpathService.createUser(user);
+                    ProviderDTO newProvider = new ProviderDTO();
+                    newProvider.setName(user.getUserName());
+                    newProvider.setUserId(acctProvider.getHref());
+                    newProvider = providerLogic.createProvider(newProvider);
+                    break;                                      
+            }
+            return Response.ok().build();
         } catch (ResourceException e) {
             return Response.status(e.getStatus())
                     .entity(e.getMessage())

@@ -26,7 +26,7 @@ public class StormpathService {
     private static Client client;
     private static Application application;
 
-    public static Account createUserClient(UserDTO user) {
+    public static Account createUser(UserDTO user) {
         client = Clients.builder().setApiKey(ApiKeys.builder()
                 .setId("6AY666GVQ7QEVVMGFXHYPYLJJ")
                 .setSecret("xicC/gFw04GEkKaYdBmRSEEC9tnmuCN+PACVrAT+zAs")
@@ -44,13 +44,15 @@ public class StormpathService {
         GroupList groups = application.getGroups();
         Group group = null;
         for (Group grp : groups) {
-            if (grp.getName().equals("user")) {
+            if (grp.getName().equals(user.getRole())) {
                 group = grp;
+                acct = application.createAccount(Accounts.newCreateRequestFor(acct).build());
+                acct.addGroup(group);
                 break;
             }
+            
         }
-        acct = application.createAccount(Accounts.newCreateRequestFor(acct).build());
-        acct.addGroup(group);
+
         return acct;
     }
 
