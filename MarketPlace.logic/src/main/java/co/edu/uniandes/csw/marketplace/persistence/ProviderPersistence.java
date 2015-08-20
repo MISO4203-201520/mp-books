@@ -4,6 +4,7 @@ import co.edu.uniandes.csw.marketplace.entities.ProviderEntity;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 
 /**
  * @generated
@@ -17,10 +18,14 @@ public class ProviderPersistence extends CrudPersistence<ProviderEntity> {
     public ProviderPersistence() {
         this.entityClass = ProviderEntity.class;
     }
-    
-    public ProviderEntity getProviderByUserId(String userId){
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("user_id", userId);
-        return this.executeSingleNamedQuery("Provider.getByUserId", params);
+
+    public ProviderEntity getProviderByUserId(String userId) throws NoResultException {
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("user_id", userId);
+            return this.executeSingleNamedQuery("Provider.getByUserId", params);
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }
