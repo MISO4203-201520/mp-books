@@ -31,9 +31,9 @@
                         controller: 'cartItemCtrl',
                         controllerAs: 'ctrl'
                     })
-                    .when('/provider', {
+                    .when('/products', {
                         templateUrl: tplUrl,
-                        controller: 'providerCtrl',
+                        controller: 'productsCtrl',
                         controllerAs: alias
                     })
                     .when('/catalog', {

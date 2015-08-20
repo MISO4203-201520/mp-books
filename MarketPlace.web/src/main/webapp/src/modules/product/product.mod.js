@@ -5,11 +5,6 @@
 
     mod.constant('productModel', {
         fields: [{
-                name: 'name',
-                displayName: 'Name',
-                type: 'String',
-                required: true
-            }, {
                 name: 'price',
                 displayName: 'Price',
                 type: 'Currency',

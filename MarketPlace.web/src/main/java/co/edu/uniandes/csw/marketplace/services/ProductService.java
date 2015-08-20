@@ -1,7 +1,9 @@
 package co.edu.uniandes.csw.marketplace.services;
 
 import co.edu.uniandes.csw.marketplace.api.IProductLogic;
+import co.edu.uniandes.csw.marketplace.api.IProviderLogic;
 import co.edu.uniandes.csw.marketplace.dtos.ProductDTO;
+import co.edu.uniandes.csw.marketplace.dtos.ProviderDTO;
 import co.edu.uniandes.csw.marketplace.providers.StatusCreated;
 import java.util.List;
 import javax.inject.Inject;
@@ -17,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import org.apache.shiro.SecurityUtils;
 
 /**
  * @generated
@@ -28,6 +31,8 @@ public class ProductService {
 
     @Inject
     private IProductLogic productLogic;
+    @Inject
+    private IProviderLogic providerLogic;
     @Context
     private HttpServletResponse response;
     @QueryParam("page")
@@ -37,12 +42,17 @@ public class ProductService {
     @QueryParam("q")
     private String bookName;
 
+    private ProviderDTO provider = (ProviderDTO) SecurityUtils.getSubject().getSession().getAttribute("Provider");
+
     /**
      * @generated
      */
     @POST
     @StatusCreated
     public ProductDTO createProduct(ProductDTO dto) {
+        if (provider != null) {
+            dto.setProvider(provider);
+        }
         return productLogic.createProduct(dto);
     }
 
@@ -54,10 +64,14 @@ public class ProductService {
         if (bookName != null) {
             return productLogic.getByBookName(bookName);
         } else {
-            if (page != null && maxRecords != null) {
-                this.response.setIntHeader("X-Total-Count", productLogic.countProducts());
+            if (provider != null) {
+                return providerLogic.getProvider(provider.getId()).getProducts();
+            } else {
+                if (page != null && maxRecords != null) {
+                    this.response.setIntHeader("X-Total-Count", productLogic.countProducts());
+                }
+                return productLogic.getProducts(page, maxRecords);
             }
-            return productLogic.getProducts(page, maxRecords);
         }
     }
 
