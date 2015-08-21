@@ -7,12 +7,19 @@ package co.edu.uniandes.csw.marketplace.services;
 
 import co.edu.uniandes.csw.marketplace.api.IClientLogic;
 import co.edu.uniandes.csw.marketplace.api.IProviderLogic;
-import co.edu.uniandes.csw.marketplace.utils.StormpathService;
 import co.edu.uniandes.csw.marketplace.dtos.ClientDTO;
 import co.edu.uniandes.csw.marketplace.dtos.ProviderDTO;
 import co.edu.uniandes.csw.marketplace.dtos.UserDTO;
 import com.stormpath.sdk.account.Account;
+import com.stormpath.sdk.account.AccountStatus;
+import com.stormpath.sdk.account.Accounts;
+import com.stormpath.sdk.application.Application;
+import com.stormpath.sdk.client.Client;
+import com.stormpath.sdk.group.Group;
+import com.stormpath.sdk.group.GroupList;
 import com.stormpath.sdk.resource.ResourceException;
+import com.stormpath.shiro.authz.CustomDataPermissionsEditor;
+import com.stormpath.shiro.realm.ApplicationRealm;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -25,6 +32,7 @@ import javax.ws.rs.core.Response;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.subject.Subject;
 
 /**
@@ -111,7 +119,7 @@ public class UserService {
         try {
             switch (user.getRole()) {
                 case "user":
-                    Account acctClient = StormpathService.createUser(user);
+                    Account acctClient = createUser(user);
                     ClientDTO newClient = new ClientDTO();
                     newClient.setName(user.getUserName());
                     newClient.setUserId(acctClient.getHref());
@@ -119,7 +127,7 @@ public class UserService {
                     break;
 
                 case "provider":
-                    Account acctProvider = StormpathService.createUser(user);
+                    Account acctProvider = createUser(user);
                     ProviderDTO newProvider = new ProviderDTO();
                     newProvider.setName(user.getUserName());
                     newProvider.setUserId(acctProvider.getHref());
@@ -134,4 +142,32 @@ public class UserService {
                     .build();
         }
     }
+    
+    private static Account createUser(UserDTO user) {
+        ApplicationRealm realm = ((ApplicationRealm) ((RealmSecurityManager) SecurityUtils.getSecurityManager()).getRealms().iterator().next());
+        Client client = realm.getClient();
+        Application application = client.getResource(realm.getApplicationRestUrl(), Application.class);
+        Account acct = client.instantiate(Account.class);
+        acct.setUsername(user.getUserName());
+        acct.setPassword(user.getPassword());
+        acct.setEmail(user.getEmail());
+        acct.setGivenName(user.getName());
+        acct.setSurname(user.getName());
+        acct.setStatus(AccountStatus.ENABLED);
+        GroupList groups = application.getGroups();
+        Group group = null;
+        for (Group grp : groups) {
+            if (grp.getName().equals(user.getRole())) {
+                new CustomDataPermissionsEditor(acct.getCustomData())
+                .append(user.getRole()+ ":**");
+                group = grp;
+                acct = application.createAccount(Accounts.newCreateRequestFor(acct).build());
+                acct.addGroup(grp);
+                break;
+            }
+        }
+        return acct;
+    }
+    
+    
 }
