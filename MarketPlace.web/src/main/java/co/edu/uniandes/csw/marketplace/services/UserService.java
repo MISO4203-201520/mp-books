@@ -143,7 +143,7 @@ public class UserService {
         }
     }
     
-    private static Account createUser(UserDTO user) {
+    private Account createUser(UserDTO user) {
         ApplicationRealm realm = ((ApplicationRealm) ((RealmSecurityManager) SecurityUtils.getSecurityManager()).getRealms().iterator().next());
         Client client = realm.getClient();
         Application application = client.getResource(realm.getApplicationRestUrl(), Application.class);
@@ -155,13 +155,9 @@ public class UserService {
         acct.setSurname(user.getName());
         acct.setStatus(AccountStatus.ENABLED);
         GroupList groups = application.getGroups();
-        Group group = null;
         for (Group grp : groups) {
             if (grp.getName().equals(user.getRole())) {
-                new CustomDataPermissionsEditor(acct.getCustomData())
-                        .append(user.getRole() + ":**");
-                group = grp;
-                acct = application.createAccount(Accounts.newCreateRequestFor(acct).build());
+                acct = application.createAccount(acct);
                 acct.addGroup(grp);
                 break;
             }
