@@ -19,7 +19,7 @@
                     class: 'primary',
                     fn: function (record) {
                         if (authSvc.getCurrentUser()) {
-                            return cartItemSvc.saveCurrentRecord({
+                            return cartItemSvc.addItem({
                                 product: record,
                                 name: record.book.name,
                                 quantity: 1});

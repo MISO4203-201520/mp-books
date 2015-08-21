@@ -61,11 +61,11 @@ public class ProductService {
      */
     @GET
     public List<ProductDTO> getProducts() {
-        if (bookName != null) {
-            return productLogic.getByBookName(bookName);
+        if (provider != null) {
+            return providerLogic.getProvider(provider.getId()).getProducts();
         } else {
-            if (provider != null) {
-                return providerLogic.getProvider(provider.getId()).getProducts();
+            if (bookName != null) {
+                return productLogic.getByBookName(bookName);
             } else {
                 if (page != null && maxRecords != null) {
                     this.response.setIntHeader("X-Total-Count", productLogic.countProducts());

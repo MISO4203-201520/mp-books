@@ -4,12 +4,15 @@
     mod.controller('cartItemCtrl', ['CrudCreator', '$scope', 'cartItemService', 'cartItemModel', '$location', 'authService', function (CrudCreator, $scope, svc, model, $location, authSvc) {
             CrudCreator.extendController(this, svc, $scope, model, 'cartItem', 'My Shopping Cart');
             var self = this;
-            this.newFetchRecords = function () {
-                this.fetchRecords().then(function () {
+            
+            var oldFetch = this.fetchRecords;
+            this.fetchRecords = function(){
+                return oldFetch.call(this).then(function(data){
                     self.calcTotal();
+                    return data;
                 });
             };
-            this.newFetchRecords();
+            this.fetchRecords();
             this.readOnly = true;
             $scope.lastQuantity = 0;
             $scope.total = 0;
@@ -20,9 +23,7 @@
                     icon: 'trash',
                     class: 'primary',
                     fn: function (record) {
-                        return svc.deleteRecord(record).then(function () {
-                            self.newFetchRecords();
-                        });
+                        self.fetchRecords();
                     },
                     show: function () {
                         return true;

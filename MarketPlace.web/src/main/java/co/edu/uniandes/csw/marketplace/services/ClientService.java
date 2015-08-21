@@ -80,9 +80,4 @@ public class ClientService {
         clientLogic.deleteClient(id);
     }
     
-    @Path("{idClient: \\d+}/cartItems")
-    public CartItemService getCartItemResource() {
-        return cartItemService;
-    }
-    
 }

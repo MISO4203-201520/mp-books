@@ -4,7 +4,7 @@
     mod.service('cartItemService', ['CrudCreator', 'cartItemContext', function (CrudCreator, context) {
             CrudCreator.extendService(this, context);
             var self = this;
-            this.saveCurrentRecord = function (record) {
+            this.addItem = function (record) {
                 this.fetchRecords().then(function (data) {
                     for (var i = 0; i < data.length; i++) {
                         if (record.product.name === data[i].product.name && record.product.id === data[i].product.id) {

@@ -19,7 +19,7 @@ public class ClientPersistence extends CrudPersistence<ClientEntity> {
         this.entityClass = ClientEntity.class;
     }
 
-    public ClientEntity getClientByUserId(String userId) throws NoResultException {
+    public ClientEntity getClientByUserId(String userId){
         try {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("user_id", userId);
