@@ -23,7 +23,9 @@
                     icon: 'trash',
                     class: 'primary',
                     fn: function (record) {
-                        self.fetchRecords();
+                        svc.deleteRecord(record).then(function(){
+                            self.fetchRecords();
+                        });
                     },
                     show: function () {
                         return true;
@@ -37,9 +39,6 @@
                 }
             };
 
-            $scope.goToGallery = function () {
-                $location.path('/catalog');
-            };
             $scope.verify = function (quantity) {
                 $scope.lastQuantity = quantity;
             };//guarda la cantidad anterior
