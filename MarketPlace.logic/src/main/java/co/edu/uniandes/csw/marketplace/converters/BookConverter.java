@@ -27,6 +27,7 @@ public abstract class BookConverter {
             dto.setId(entity.getId());
             dto.setName(entity.getName());
             dto.setImage(entity.getImage());
+            dto.setPublicationDate(entity.getPublicationDate());
 
             return dto;
         } else {
@@ -61,7 +62,7 @@ public abstract class BookConverter {
             dto.setDescription(entity.getDescription());
             dto.setImage(entity.getImage());
             dto.setIsbn(entity.getIsbn());
-
+            dto.setPublicationDate(entity.getPublicationDate());
             return dto;
         } else {
             return null;
@@ -79,7 +80,7 @@ public abstract class BookConverter {
             entity.setDescription(dto.getDescription());
             entity.setImage(dto.getImage());
             entity.setIsbn(dto.getIsbn());
-
+            entity.setPublicationDate(dto.getPublicationDate());
             return entity;
         } else {
             return null;

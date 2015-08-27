@@ -24,5 +24,10 @@
                 displayName: 'ISBN-10',
                 type: 'String',
                 required: true
+            },{
+                name: 'publicationDate',
+                displayName: 'Publication Date',
+                type: 'Date',
+                required: true
             }]});
 })(window.angular);

@@ -1,5 +1,6 @@
 package co.edu.uniandes.csw.marketplace.dtos;
 
+import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -13,6 +14,7 @@ public class BookDTO {
     private String description;
     private String image;
     private String isbn;
+    private Date publicationDate;   
     /**
      * @generated
      */
@@ -81,6 +83,14 @@ public class BookDTO {
      */
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+    
+    public Date getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(Date publicationDate) {
+        this.publicationDate = publicationDate;
     }
 
 }
