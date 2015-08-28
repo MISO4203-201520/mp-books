@@ -25,4 +25,10 @@ public class ProductPersistence extends CrudPersistence<ProductEntity> {
         params.put("name", "%" + name.toUpperCase() + "%");
         return executeListNamedQuery("Product.getByBookName", params);
     }
+    
+    public ProductEntity getMostExpensiveByProvider (Long providerId){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("id",providerId);
+        return executeSingleNamedQuery("Product.getMostExpensiveByProvider",params);
+    }
 }

@@ -102,4 +102,10 @@ public class ProductService {
     public void deleteProduct(@PathParam("id") Long id) {
         productLogic.deleteProduct(id);
     }
+    
+    @GET
+    @Path("/mostExpensiveByProvider/{providerId: \\d+}")
+    public ProductDTO getMostExpensiveByProvider(@PathParam("providerId") Long id){
+        return productLogic.getMostExpensiveByProvider(id);
+    }
 }
