@@ -27,7 +27,7 @@
                         controllerAs: alias
                     })
                     .when('/shoppingCart', {
-                        templateUrl: 'src/modules/cartItem/templates/ShoppingCart.html',
+                        templateUrl: 'src/modules/cartItem/shoppingCart.tpl.html',
                         controller: 'cartItemCtrl',
                         controllerAs: 'ctrl'
                     })
