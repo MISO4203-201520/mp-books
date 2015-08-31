@@ -3,11 +3,19 @@
 
     mod.controller('productCtrl', ['CrudCreator', '$scope', 'productService', 'productModel', 'cartItemService', '$location', 'authService', function (CrudCreator, $scope, svc, model, cartItemSvc, $location, authSvc) {
             CrudCreator.extendController(this, svc, $scope, model, 'product', 'Products');
-
+            var self = this;
             this.searchByName = function (bookName) {
                 var search;
                 if (bookName) {
                     search = '?q=' + bookName;
+                }
+                $location.url('/catalog' + search);
+            };
+            
+            this.findItem = function(record){
+               var search;
+                if (record.book.name) {
+                    search = '?cheaper=' + record.book.name;
                 }
                 $location.url('/catalog' + search);
             };
@@ -26,6 +34,17 @@
                         } else {
                             $location.path('/login');// o colocar servicio de LocalStorage
                         }
+                    },
+                    show: function () {
+                        return true;
+                    }
+                },{
+                    name: 'findCheaper',
+                    displayName: 'Find cheaper',
+                    icon: 'search',
+                    class: 'warning',
+                    fn: function (record) {
+                            return self.findItem(record);
                     },
                     show: function () {
                         return true;

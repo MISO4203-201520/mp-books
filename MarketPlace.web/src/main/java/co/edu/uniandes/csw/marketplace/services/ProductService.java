@@ -5,6 +5,7 @@ import co.edu.uniandes.csw.marketplace.api.IProviderLogic;
 import co.edu.uniandes.csw.marketplace.dtos.ProductDTO;
 import co.edu.uniandes.csw.marketplace.dtos.ProviderDTO;
 import co.edu.uniandes.csw.marketplace.providers.StatusCreated;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +42,8 @@ public class ProductService {
     private Integer maxRecords;
     @QueryParam("q")
     private String bookName;
+    @QueryParam("cheaper")
+    private String nameRef;
 
     private ProviderDTO provider = (ProviderDTO) SecurityUtils.getSubject().getSession().getAttribute("Provider");
 
@@ -67,10 +70,16 @@ public class ProductService {
             if (bookName != null) {
                 return productLogic.getByBookName(bookName);
             } else {
-                if (page != null && maxRecords != null) {
-                    this.response.setIntHeader("X-Total-Count", productLogic.countProducts());
+                if (nameRef != null) {
+                    List<ProductDTO> books = new ArrayList<>();
+                    books.add(productLogic.getCheaperProduct(nameRef));
+                    return books;
+                } else {
+                    if (page != null && maxRecords != null) {
+                        this.response.setIntHeader("X-Total-Count", productLogic.countProducts());
+                    }
+                    return productLogic.getProducts(page, maxRecords);
                 }
-                return productLogic.getProducts(page, maxRecords);
             }
         }
     }
@@ -102,10 +111,5 @@ public class ProductService {
     public void deleteProduct(@PathParam("id") Long id) {
         productLogic.deleteProduct(id);
     }
-    
-    @GET
-    @Path("/mostExpensiveByProvider/{providerId: \\d+}")
-    public ProductDTO getMostExpensiveByProvider(@PathParam("providerId") Long id){
-        return productLogic.getMostExpensiveByProvider(id);
-    }
+
 }

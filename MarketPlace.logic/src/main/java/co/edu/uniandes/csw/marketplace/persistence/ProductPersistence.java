@@ -1,11 +1,13 @@
 package co.edu.uniandes.csw.marketplace.persistence;
 
+import co.edu.uniandes.csw.marketplace.dtos.ProductDTO;
 import co.edu.uniandes.csw.marketplace.entities.ProductEntity;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
+import javax.persistence.NoResultException;
 
 /**
  * @generated
@@ -26,9 +28,15 @@ public class ProductPersistence extends CrudPersistence<ProductEntity> {
         return executeListNamedQuery("Product.getByBookName", params);
     }
     
-    public ProductEntity getMostExpensiveByProvider (Long providerId){
+    public ProductEntity getCheaperProduct (String name){
+        try{
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("id",providerId);
-        return executeSingleNamedQuery("Product.getMostExpensiveByProvider",params);
+        params.put("name",name);
+        List<ProductEntity> list = new ArrayList<ProductEntity>();
+        list = executeListNamedQuery("Product.getCheaperProduct",params);
+        return list.get(0);
+        }catch(NoResultException e){
+            return null;
+        }
     }
 }

@@ -12,5 +12,5 @@ public interface IProductLogic {
     public void deleteProduct(Long id);
     public List<ProductDTO> findByName(String name);
     public List<ProductDTO> getByBookName(String name);
-    public ProductDTO getMostExpensiveByProvider(Long providerId);
+    public ProductDTO getCheaperProduct(String name);
 }
