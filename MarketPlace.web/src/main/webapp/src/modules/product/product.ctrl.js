@@ -13,11 +13,10 @@
             };
             
             this.findItem = function(record){
-               var search;
-                if (record.book.name) {
-                    search = '?cheaper=' + record.book.name;
-                }
-                $location.url('/catalog' + search);
+               svc.findItem(record.book.id).then(function(book){
+                   $scope.records = [];
+                   $scope.records.push(book);
+               });
             };
 
             this.recordActions = [{
@@ -40,7 +39,7 @@
                     }
                 },{
                     name: 'findCheaper',
-                    displayName: 'Find cheaper',
+                    displayName: 'Find cheapest',
                     icon: 'search',
                     class: 'warning',
                     fn: function (record) {

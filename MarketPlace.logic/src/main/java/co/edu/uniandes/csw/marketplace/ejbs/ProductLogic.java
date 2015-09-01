@@ -73,7 +73,7 @@ public class ProductLogic implements IProductLogic {
         return ProductConverter.listEntity2DTO(persistence.getByBookName(name));
     }
     
-    public ProductDTO getCheaperProduct(String name){       
-        return ProductConverter.fullEntity2DTO(persistence.getCheaperProduct(name));
+    public ProductDTO getCheapestProduct(Long idBook){       
+        return ProductConverter.fullEntity2DTO(persistence.getCheapestProduct(idBook));
     }
 }

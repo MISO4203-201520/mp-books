@@ -28,12 +28,12 @@ public class ProductPersistence extends CrudPersistence<ProductEntity> {
         return executeListNamedQuery("Product.getByBookName", params);
     }
     
-    public ProductEntity getCheaperProduct (String name){
+    public ProductEntity getCheapestProduct (Long idBook){
         try{
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("name",name);
+        params.put("idBook",idBook);
         List<ProductEntity> list = new ArrayList<ProductEntity>();
-        list = executeListNamedQuery("Product.getCheaperProduct",params);
+        list = executeListNamedQuery("Product.getCheapestProduct",params);
         return list.get(0);
         }catch(NoResultException e){
             return null;

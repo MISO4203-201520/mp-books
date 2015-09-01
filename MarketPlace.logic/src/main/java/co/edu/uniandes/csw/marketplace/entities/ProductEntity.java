@@ -14,7 +14,7 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Product.getByBookName", query = "select u from ProductEntity u WHERE UPPER(u.book.name) like :name"),
-    @NamedQuery(name = "Product.getCheaperProduct", query = "select u from ProductEntity u WHERE u.book.name = :name order by u.price")
+    @NamedQuery(name = "Product.getCheapestProduct", query = "select u from ProductEntity u WHERE u.book.id = :idBook order by u.price")
 })
 public class ProductEntity implements Serializable {
 

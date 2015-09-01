@@ -70,16 +70,12 @@ public class ProductService {
             if (bookName != null) {
                 return productLogic.getByBookName(bookName);
             } else {
-                if (nameRef != null) {
-                    List<ProductDTO> books = new ArrayList<>();
-                    books.add(productLogic.getCheaperProduct(nameRef));
-                    return books;
-                } else {
-                    if (page != null && maxRecords != null) {
-                        this.response.setIntHeader("X-Total-Count", productLogic.countProducts());
-                    }
-                    return productLogic.getProducts(page, maxRecords);
+
+                if (page != null && maxRecords != null) {
+                    this.response.setIntHeader("X-Total-Count", productLogic.countProducts());
                 }
+                return productLogic.getProducts(page, maxRecords);
+
             }
         }
     }
@@ -110,6 +106,12 @@ public class ProductService {
     @Path("{id: \\d+}")
     public void deleteProduct(@PathParam("id") Long id) {
         productLogic.deleteProduct(id);
+    }
+
+    @GET
+    @Path("/cheapest/{id: \\d+}")
+    public ProductDTO getCheapestProduct(@PathParam("id") Long idBook) {
+        return productLogic.getCheapestProduct(idBook);
     }
 
 }
