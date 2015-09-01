@@ -92,6 +92,7 @@ public abstract class BookConverter {
     public static BookDTO fullEntity2DTO(BookEntity entity) {
         if (entity != null) {
             BookDTO dto = basicEntity2DTO(entity);
+            dto.setReviews(ReviewConverter.listEntity2DTO(entity.getReviews()));
             return dto;
         } else {
             return null;
@@ -104,6 +105,7 @@ public abstract class BookConverter {
     public static BookEntity fullDTO2Entity(BookDTO dto) {
         if (dto != null) {
             BookEntity entity = basicDTO2Entity(dto);
+            entity.setReviews(ReviewConverter.childListDTO2Entity(dto.getReviews(), entity));
             return entity;
         } else {
             return null;

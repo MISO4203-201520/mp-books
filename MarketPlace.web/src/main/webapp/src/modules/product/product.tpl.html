@@ -1,27 +1,38 @@
 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="ctrl.closeAlert($index)">{{alert.msg}}</alert>
-<div ng-hide="ctrl.editMode">
+<div ng-hide="ctrl.detailsMode">
     <div class="col-sm-12">
-    <div ng-repeat="record in records">
-        <div class="col-sm-4 well text-center">
-            <div class="col-md-12">
-                <div class="img-thumbnail" id="cover" ng-if="record.book.image">
-                    <a ng-href="{{record.book.image}}" target="_blank"><img class="img-responsive" style="height: 20vw;" ng-src="{{record.book.image}}" alt="{{record.book.image}}"></a>
+        <div ng-repeat="record in records">
+            <div class="col-sm-4 well text-center">
+                <div class="col-md-12">
+                    <div class="img-thumbnail" id="cover" ng-if="record.book.image">
+                        <a ng-href="{{record.book.image}}" target="_blank"><img class="img-responsive" style="height: 20vw;" ng-src="{{record.book.image}}" alt="{{record.book.image}}"></a>
+                    </div>
                 </div>
+                <div class="caption" >
+                    <p><strong>Book name:</strong> {{record.book.name}}</p>
+                    <p><strong>Price:</strong> {{record.price| currency}}</p>
+                    <p><strong>Provider:</strong> {{record.provider.name}}</p>
+                </div>
+                <p class="text-center">
+                    <button ng-repeat="(key, action) in ctrl.recordActions" id="{{$parent.$index}}-{{key}}-btn" class="btn btn-{{action.class|| 'default'}} btn-sm" ng-show="action.show()" ng-click="action.fn(record)"><span class="glyphicon glyphicon-{{action.icon}}"></span> {{action.displayName}}</button>
+                </p>
             </div>
-            <div class="caption" >
-                <p><strong>Book name:</strong> {{record.book.name}}</p>
-                <p><strong>Price:</strong> {{record.price | currency}}</p>
-                <p><strong>Provider:</strong> {{record.provider.name}}</p>
-            </div>
-            <p class="text-center">
-                <button ng-repeat="(key, action) in ctrl.recordActions" id="{{$parent.$index}}-{{key}}-btn" class="btn btn-{{action.class || 'default'}} btn-sm" ng-show="action.show()" ng-click="action.fn(record)"><span class="glyphicon glyphicon-{{action.icon}}"></span> {{action.displayName}}</button>
-            </p>
         </div>
     </div>
-</div>
     <div class="text-center">
         <pagination ng-show="ctrl.numPages > 1" num-pages="ctrl.numPages" total-items="ctrl.totalItems"
                     ng-model="ctrl.currentPage" ng-change="ctrl.pageChanged()" items-per-page="ctrl.itemsPerPage"
                     max-size="ctrl.maxSize" class="pagination-md" boundary-links="true" rotate="false"></pagination>
     </div>
+</div>
+<div ng-show="ctrl.detailsMode" ng-if="bookRecord">
+    <div class="panel panel-default">
+        <div class="panel-heading">{{bookRecord.name}}</div>
+        <ul class="list-group" ng-repeat="review in bookRecord.reviews">
+            <li class="list-group-item">
+                {{review.description}} - <em>{{review.source}}</em>
+            </li>
+        </ul>    
+    </div>
+    <a class="btn btn-default" ng-click="ctrl.detailsMode = false" >Back</a>
 </div>

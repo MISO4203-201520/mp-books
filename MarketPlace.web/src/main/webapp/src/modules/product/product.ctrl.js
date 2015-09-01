@@ -1,9 +1,9 @@
 (function (ng) {
     var mod = ng.module('productModule');
 
-    mod.controller('productCtrl', ['CrudCreator', '$scope', 'productService', 'productModel', 'cartItemService', '$location', 'authService', function (CrudCreator, $scope, svc, model, cartItemSvc, $location, authSvc) {
+    mod.controller('productCtrl', ['CrudCreator', '$scope', 'productService', 'productModel', 'cartItemService', '$location', 'authService', 'bookService', function (CrudCreator, $scope, svc, model, cartItemSvc, $location, authSvc, bookSvc) {
             CrudCreator.extendController(this, svc, $scope, model, 'product', 'Products');
-
+            this.detailsMode = false;
             this.searchByName = function (bookName) {
                 var search;
                 if (bookName) {
@@ -11,9 +11,9 @@
                 }
                 $location.url('/catalog' + search);
             };
-
-            this.recordActions = [{
-                    name: 'addToCart',
+            var self = this;
+            this.recordActions = {
+                addToCart: {
                     displayName: 'Add to Cart',
                     icon: 'shopping-cart',
                     class: 'primary',
@@ -30,7 +30,21 @@
                     show: function () {
                         return true;
                     }
-                }];
+                },
+                reviews: {
+                    displayName: 'Reviews',
+                    icon: 'list',
+                    class: 'info',
+                    fn: function (record) {
+                        bookSvc.api.get(record.book.id).then(function (data) {
+                            self.detailsMode = true;
+                            $scope.bookRecord = data;
+                        });
+                    },
+                    show: function () {
+                        return !self.detailsMode;
+                    }
+                }};
 
 //            this.loadRefOptions();
             this.fetchRecords();
