@@ -5,7 +5,6 @@ import co.edu.uniandes.csw.marketplace.api.IProviderLogic;
 import co.edu.uniandes.csw.marketplace.dtos.ProductDTO;
 import co.edu.uniandes.csw.marketplace.dtos.ProviderDTO;
 import co.edu.uniandes.csw.marketplace.providers.StatusCreated;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -42,8 +41,6 @@ public class ProductService {
     private Integer maxRecords;
     @QueryParam("q")
     private String bookName;
-    @QueryParam("cheaper")
-    private String nameRef;
 
     private ProviderDTO provider = (ProviderDTO) SecurityUtils.getSubject().getSession().getAttribute("Provider");
 
