@@ -37,6 +37,7 @@ public class AuthzFilter extends RolesAuthorizationFilter {
                         return SecurityUtils.getSubject().hasRole(data[0]);
                     }
                 }
+                return true;
             }
             return true;
         } else {
