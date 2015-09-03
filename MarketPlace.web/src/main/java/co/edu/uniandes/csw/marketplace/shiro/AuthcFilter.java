@@ -5,11 +5,9 @@
  */
 package co.edu.uniandes.csw.marketplace.shiro;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
@@ -22,23 +20,8 @@ public class AuthcFilter extends FormAuthenticationFilter {
 
     @Override
     public boolean onAccessDenied(ServletRequest request, ServletResponse response) {
-        ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        ((HttpServletResponse)response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return SecurityUtils.getSubject().isAuthenticated();
-    }
-
-    @Override
-    public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        if (mappedValue != null) {
-            String[] methodRef = (String[]) mappedValue;
-            for (String methodRef1 : methodRef) {
-                if (((HttpServletRequest) request).getMethod().equals(methodRef1)) {
-                    return onAccessDenied(request, response);
-                }
-            }
-            return true;
-        }else{
-           return super.isAccessAllowed(request, response, mappedValue);
-        }
     }
 
 }
