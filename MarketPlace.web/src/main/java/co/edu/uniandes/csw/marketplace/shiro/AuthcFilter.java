@@ -23,7 +23,7 @@ public class AuthcFilter extends FormAuthenticationFilter {
     @Override
     public boolean onAccessDenied(ServletRequest request, ServletResponse response) {
         ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        return SecurityUtils.getSubject().isAuthenticated();
+        return false;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class AuthcFilter extends FormAuthenticationFilter {
             String[] methodRef = (String[]) mappedValue;
             for (String methodRef1 : methodRef) {
                 if (((HttpServletRequest) request).getMethod().equals(methodRef1)) {
-                    return onAccessDenied(request, response);
+                    return false;
                 }
             }
             return true;

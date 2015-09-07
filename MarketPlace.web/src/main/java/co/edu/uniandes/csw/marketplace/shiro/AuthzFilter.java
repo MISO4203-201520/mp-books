@@ -31,11 +31,15 @@ public class AuthzFilter extends RolesAuthorizationFilter {
             String[] methodRef = (String[]) mappedValue;
             for (String methodRef1 : methodRef) {
                 String[] data = methodRef1.split(":");
-                String[] methods = data[1].split("-");
-                for (String method : methods) {
-                    if (((HttpServletRequest) request).getMethod().equals(method)) {
-                        return SecurityUtils.getSubject().hasRole(data[0]);
+                if (data.length > 1) {
+                    String[] methods = data[1].split("-");
+                    for (String method : methods) {
+                        if (((HttpServletRequest) request).getMethod().equals(method)) {
+                            return SecurityUtils.getSubject().hasRole(data[0]);
+                        }
                     }
+                } else {
+                    return super.isAccessAllowed(request, response, mappedValue);
                 }
                 return true;
             }
