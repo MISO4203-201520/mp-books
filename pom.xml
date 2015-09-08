@@ -191,7 +191,7 @@
                     </plugin>
                 </plugins>                           
             </build>
-            <!-- Se realiza la configuración del cubrimiento en el pom.xml padre -->
+            
         </profile>
     </profiles>
 </project>
