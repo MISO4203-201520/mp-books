@@ -12,13 +12,11 @@ import co.edu.uniandes.csw.marketplace.dtos.ProviderDTO;
 import co.edu.uniandes.csw.marketplace.dtos.UserDTO;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.account.AccountStatus;
-import com.stormpath.sdk.account.Accounts;
 import com.stormpath.sdk.application.Application;
 import com.stormpath.sdk.client.Client;
 import com.stormpath.sdk.group.Group;
 import com.stormpath.sdk.group.GroupList;
 import com.stormpath.sdk.resource.ResourceException;
-import com.stormpath.shiro.authz.CustomDataPermissionsEditor;
 import com.stormpath.shiro.realm.ApplicationRealm;
 import java.util.Map;
 import javax.inject.Inject;
@@ -34,6 +32,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.subject.Subject;
+import org.jboss.logging.Logger;
 
 /**
  *
@@ -53,9 +52,9 @@ public class UserService {
     @Path("/login")
     @POST
     public Response login(UserDTO user) {
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), user.getPassword(), user.isRememberMe());
+        Subject currentUser = SecurityUtils.getSubject();
         try {
-            UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), user.getPassword(), user.isRememberMe());
-            Subject currentUser = SecurityUtils.getSubject();
             currentUser.login(token);
             ClientDTO client = clientLogic.getClientByUserId(currentUser.getPrincipal().toString());
             if (client != null) {
@@ -74,6 +73,7 @@ public class UserService {
                 }
             }
         } catch (AuthenticationException e) {
+            Logger.getLogger(UserService.class).log(Logger.Level.FATAL, e, e);
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(e.getMessage())
                     .type(MediaType.TEXT_PLAIN)
@@ -84,11 +84,12 @@ public class UserService {
     @Path("/logout")
     @GET
     public Response logout() {
-        try {
-            Subject currentUser = SecurityUtils.getSubject();
+
+        Subject currentUser = SecurityUtils.getSubject();
+        if (currentUser != null) {
             currentUser.logout();
             return Response.ok().build();
-        } catch (Exception e) {
+        } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
@@ -97,16 +98,19 @@ public class UserService {
     @GET
     public Response getCurrentUser() {
         UserDTO user = new UserDTO();
-        try {
-            Subject currentUser = SecurityUtils.getSubject();
-            Map<String, String> userAttributes = (Map<String, String>) currentUser.getPrincipals().oneByType(java.util.Map.class);
+        Subject currentUser = SecurityUtils.getSubject();
+        if (currentUser != null) {
+            Map<String, String> userAttributes = (Map<String, String>) currentUser.getPrincipals().oneByType(java.util.Map.class
+            );
             user.setName(userAttributes.get("givenName") + " " + userAttributes.get("surname"));
             user.setEmail(userAttributes.get("email"));
             user.setUserName(userAttributes.get("username"));
-            return Response.ok(user).build();
-        } catch (AuthenticationException e) {
+            return Response.ok(user)
+                    .build();
+        } else { 
+            Logger.getLogger(UserService.class).log(Logger.Level.FATAL, "user null");
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(e.getMessage())
+                    .entity( "user null")
                     .type(MediaType.TEXT_PLAIN)
                     .build();
         }
@@ -132,7 +136,7 @@ public class UserService {
                     newProvider.setName(user.getUserName());
                     newProvider.setUserId(acctProvider.getHref());
                     newProvider = providerLogic.createProvider(newProvider);
-                    break;                                      
+                    break;
             }
             return Response.ok().build();
         } catch (ResourceException e) {
@@ -142,12 +146,14 @@ public class UserService {
                     .build();
         }
     }
-    
+
     private Account createUser(UserDTO user) {
         ApplicationRealm realm = ((ApplicationRealm) ((RealmSecurityManager) SecurityUtils.getSecurityManager()).getRealms().iterator().next());
         Client client = realm.getClient();
-        Application application = client.getResource(realm.getApplicationRestUrl(), Application.class);
+        Application application = client.getResource(realm.getApplicationRestUrl(), Application.class
+        );
         Account acct = client.instantiate(Account.class);
+
         acct.setUsername(user.getUserName());
         acct.setPassword(user.getPassword());
         acct.setEmail(user.getEmail());
