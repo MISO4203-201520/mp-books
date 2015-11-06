@@ -1,0 +1,3 @@
+Requerimiento;Nivel;Method;LoC
+C4-R5;Backend;getClientByUserId;2
+C4-R5;Backend;getClientByUserId;8
