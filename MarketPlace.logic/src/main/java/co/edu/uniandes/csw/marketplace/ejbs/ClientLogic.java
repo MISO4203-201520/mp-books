@@ -5,6 +5,7 @@ import co.edu.uniandes.csw.marketplace.converters.ClientConverter;
 import co.edu.uniandes.csw.marketplace.dtos.ClientDTO;
 import co.edu.uniandes.csw.marketplace.entities.ClientEntity;
 import co.edu.uniandes.csw.marketplace.persistence.ClientPersistence;
+import co.edu.uniandes.csw.mp.ann.MPLoCAnn;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -69,6 +70,7 @@ public class ClientLogic implements IClientLogic {
         return ClientConverter.listEntity2DTO(persistence.findByName(name));
     }
     
+    @MPLoCAnn(tier="Backend", reqId="C4-R5")
     public ClientDTO getClientByUserId(String userId){
         return ClientConverter.refEntity2DTO(persistence.getClientByUserId(userId));
     }
