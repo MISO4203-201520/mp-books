@@ -18,11 +18,6 @@
             <name>csw uniandes</name>
             <url>http://157.253.236.129:8081/content/repositories/releases/</url>
         </repository>
-        <repository>
-            <id>csw-snapshots</id>
-            <name>csw uniandes</name>
-            <url>http://157.253.236.129:8081/content/repositories/snapshots/</url>
-        </repository>
     </repositories> 
     <dependencies>
         <!-- embedded glassfish 3.1.2 --> 
